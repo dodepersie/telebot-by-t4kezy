@@ -2,6 +2,8 @@ const TelegramBot = require("node-telegram-bot-api");
 const commands = require("../libs/commands");
 const { helpMessage, invalidCommand } = require("../libs/constant");
 const {
+  handleMessage,
+  handleCallbackQuery,
   sendRandomQuoteHandler,
   sendNewsHandler,
   sendLatestEQHandler,
@@ -14,35 +16,11 @@ class Telebot extends TelegramBot {
   constructor(token, options) {
     super(token, options);
     this.on("message", (data) => {
-      const isCommands = Object.values(commands).some((keyword) =>
-        keyword.test(data.text)
-      );
-
-      if (!isCommands) {
-        console.log(
-          `Invalid command executed by: ${data.from.username} => ${data.text}`
-        );
-
-        this.sendMessage(data.from.id, invalidCommand, {
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: "Panduan Pengguna",
-                  callback_data: "go_to_help",
-                },
-              ],
-            ],
-          },
-        });
-      }
+      handleMessage(data, this.sendMessage.bind(this), invalidCommand);
     });
 
     this.on("callback_query", (callback) => {
-      const callbackName = callback.data;
-      if (callbackName == "go_to_help") {
-        this.sendMessage(callback.from.id, helpMessage);
-      }
+      handleCallbackQuery(callback, this.sendMessage.bind(this), helpMessage);
     });
   }
 
@@ -160,6 +138,7 @@ class Telebot extends TelegramBot {
                 },
               ],
             ],
+            resize_keyboard: true,
           },
         }
       );
@@ -167,77 +146,76 @@ class Telebot extends TelegramBot {
 
     this.on("callback_query", async (callback) => {
       const callbackName = callback.data;
-      if (callbackName == "go_to_greeting") {
-        this.sendMessage(
-          callback.from.id,
-          `Halo, ${callback.from.first_name}! 😜`
-        );
-      }
-
-      if (callbackName == "go_to_quote") {
-        try {
-          await sendRandomQuoteHandler(callback, this.sendMessage.bind(this));
-        } catch (err) {
-          console.error(err);
-          this.sendMessage(callback.from.id, "Error fetching quote.");
-        }
-      }
-
-      if (callbackName == "go_to_news") {
-        try {
-          await sendNewsHandler(
-            callback,
-            this.sendMessage.bind(this),
-            this.sendPhoto.bind(this),
-            this.deleteMessage.bind(this)
-          );
-        } catch (err) {
-          console.error(err);
-          this.sendMessage(callback.from.id, "Error fetching news.");
-        }
-      }
-
-      if (callbackName == "go_to_eq") {
-        try {
-          await sendLatestEQHandler(
-            callback,
-            this.sendMessage.bind(this),
-            this.sendPhoto.bind(this),
-            this.deleteMessage.bind(this)
-          );
-        } catch (err) {
-          console.error(err);
+      switch (callbackName) {
+        case "go_to_greeting":
           this.sendMessage(
             callback.from.id,
-            "Error fetching earthquake information."
+            `Halo, ${callback.from.first_name}! 😜`
           );
-        }
-      }
-
-      if (callbackName == "go_to_activity") {
-        try {
-          await sendActivityHandler(
-            callback,
-            this.sendMessage.bind(this),
-            this.deleteMessage.bind(this)
-          );
-        } catch (err) {
-          console.error(err);
-          this.sendMessage(callback.from.id, "Error fetching activity..");
-        }
-      }
-
-      if (callbackName == "go_to_joke") {
-        try {
-          await sendJokeHandler(
-            callback,
-            this.sendMessage.bind(this),
-            this.deleteMessage.bind(this)
-          );
-        } catch (err) {
-          console.error(err);
-          this.sendMessage(callback.from.id, "Error fetching activity..");
-        }
+          break;
+        case "go_to_quote":
+          try {
+            await sendRandomQuoteHandler(callback, this.sendMessage.bind(this));
+          } catch (err) {
+            console.error(err);
+            this.sendMessage(callback.from.id, "Error fetching quote... 😢");
+          }
+          break;
+        case "go_to_news":
+          try {
+            await sendNewsHandler(
+              callback,
+              this.sendMessage.bind(this),
+              this.sendPhoto.bind(this),
+              this.deleteMessage.bind(this)
+            );
+          } catch (err) {
+            console.error(err);
+            this.sendMessage(callback.from.id, "Error fetching news... 😢");
+          }
+          break;
+        case "go_to_eq":
+          try {
+            await sendLatestEQHandler(
+              callback,
+              this.sendMessage.bind(this),
+              this.sendPhoto.bind(this),
+              this.deleteMessage.bind(this)
+            );
+          } catch (err) {
+            console.error(err);
+            this.sendMessage(
+              callback.from.id,
+              "Error fetching earthquake information... 😢"
+            );
+          }
+          break;
+        case "go_to_activity":
+          try {
+            await sendActivityHandler(
+              callback,
+              this.sendMessage.bind(this),
+              this.deleteMessage.bind(this)
+            );
+          } catch (err) {
+            console.error(err);
+            this.sendMessage(callback.from.id, "Error fetching activity... 😢");
+          }
+          break;
+        case "go_to_joke":
+          try {
+            await sendJokeHandler(
+              callback,
+              this.sendMessage.bind(this),
+              this.deleteMessage.bind(this)
+            );
+          } catch (err) {
+            console.error(err);
+            this.sendMessage(callback.from.id, "Error fetching joke... 😢");
+          }
+          break;
+        default:
+          break;
       }
     });
   }
@@ -307,7 +285,7 @@ class Telebot extends TelegramBot {
    ** Explore functions yang ada
    */
   masihGatau() {
-    // console.log("Masih bingung!");
+    console.log("Masih bingung!");
   }
 }
 

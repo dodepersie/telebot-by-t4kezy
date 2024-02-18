@@ -19,7 +19,7 @@ const main = () => {
     telebot.sendActivity(); // #2
     telebot.sendJoke(); // #2
     // telebot.changePrefix(); // #3
-    telebot.masihGatau(); // #5
+    // telebot.masihGatau(); // #5
 }
 
 main();

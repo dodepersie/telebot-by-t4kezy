@@ -3,6 +3,40 @@
  ** Pisahkan function
  */
 
+ const commands = require("../libs/commands");
+
+ async function handleMessage(data, sendMessage, invalidCommand) {
+  const isCommands = Object.values(commands).some((keyword) =>
+    keyword.test(data.text)
+  );
+
+  if (!isCommands) {
+    console.log(
+      `Invalid command executed by: ${data.from.username} => ${data.text}`
+    );
+
+    sendMessage(data.from.id, invalidCommand, {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "Panduan Pengguna",
+              callback_data: "go_to_help",
+            },
+          ],
+        ],
+      },
+    });
+  }
+}
+
+async function handleCallbackQuery(callback, sendMessage, helpMessage) {
+  const callbackName = callback.data;
+  if (callbackName == "go_to_help") {
+    sendMessage(callback.from.id, helpMessage);
+  }
+}
+
 async function sendRandomQuoteHandler(data, sendMessage) {
   const quote_endpoint = process.env.QUOTE_ENDPOINT;
   try {
@@ -149,6 +183,8 @@ async function sendJokeHandler(callback, sendMessage, deleteMessage) {
 }
 
 module.exports = {
+  handleMessage,
+  handleCallbackQuery,
   sendRandomQuoteHandler,
   sendNewsHandler,
   sendLatestEQHandler,
