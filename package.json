@@ -1,0 +1,22 @@
+{
+  "name": "telebot-course",
+  "version": "1.0.0",
+  "description": "Learning bot",
+  "main": "main.js",
+  "scripts": {
+    "dev": "nodemon main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "telegram",
+    "telebot",
+    "course"
+  ],
+  "author": "dode_p3rsie",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.4",
+    "node-telegram-bot-api": "^0.64.0"
+  }
+}
