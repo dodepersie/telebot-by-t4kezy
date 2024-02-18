@@ -28,7 +28,7 @@ class Telebot extends TelegramBot {
   sendGreeting() {
     this.onText(commands.greeting, (data) => {
       console.log(`Send Greeting executed by => ${data.from.username}`);
-      this.sendMessage(data.from.id, "Halo juga 😜");
+      this.sendMessage(data.from.id, `Hello, ${data.from.first_name}! 😜`);
     });
   }
 
@@ -44,7 +44,7 @@ class Telebot extends TelegramBot {
   followMe() {
     this.onText(commands.follow, (data, after) => {
       console.log(`Follow Me executed by => ${data.from.username}`);
-      this.sendMessage(data.from.id, `Kamu baru saja mengetik: ${after[1]}`);
+      this.sendMessage(data.from.id, after[1]);
     });
   }
 
@@ -95,53 +95,49 @@ class Telebot extends TelegramBot {
   showCommands() {
     this.onText(commands.commands, (data) => {
       console.log(`Command Menu executed by => ${data.from.username}`);
-      this.sendMessage(
-        data.from.id,
-        "Berikut adalah commands yang dapat digunakan pada bot ini:",
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: "Greet me!~",
-                  callback_data: "go_to_greeting",
-                },
-              ],
-              [
-                {
-                  text: "Kanye West's Quote 🤩",
-                  callback_data: "go_to_quote",
-                },
-              ],
-              [
-                {
-                  text: "Latest News 🗞️",
-                  callback_data: "go_to_news",
-                },
-              ],
-              [
-                {
-                  text: "Latest Earthquake Information 😱",
-                  callback_data: "go_to_eq",
-                },
-              ],
-              [
-                {
-                  text: "I am bored 😢",
-                  callback_data: "go_to_activity",
-                },
-              ],
-              [
-                {
-                  text: "Make me laugh 😏",
-                  callback_data: "go_to_joke",
-                },
-              ],
+      this.sendMessage(data.from.id, "Here is some available commands:", {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "Greet me!~",
+                callback_data: "go_to_greeting",
+              },
             ],
-            resize_keyboard: true,
-          },
-        }
-      );
+            [
+              {
+                text: "Kanye West's Quote 🤩",
+                callback_data: "go_to_quote",
+              },
+            ],
+            [
+              {
+                text: "Latest News 🗞️",
+                callback_data: "go_to_news",
+              },
+            ],
+            [
+              {
+                text: "Latest Earthquake Information 😱",
+                callback_data: "go_to_eq",
+              },
+            ],
+            [
+              {
+                text: "I am bored 😢",
+                callback_data: "go_to_activity",
+              },
+            ],
+            [
+              {
+                text: "Make me laugh 😏",
+                callback_data: "go_to_joke",
+              },
+            ],
+          ],
+          resize_keyboard: true,
+        },
+      });
     });
 
     this.on("callback_query", async (callback) => {
@@ -150,69 +146,41 @@ class Telebot extends TelegramBot {
         case "go_to_greeting":
           this.sendMessage(
             callback.from.id,
-            `Halo, ${callback.from.first_name}! 😜`
+            `Hello, ${callback.from.first_name}! 😜`
           );
           break;
         case "go_to_quote":
-          try {
-            await sendRandomQuoteHandler(callback, this.sendMessage.bind(this));
-          } catch (err) {
-            console.error(err);
-            this.sendMessage(callback.from.id, "Error fetching quote... 😢");
-          }
+          await sendRandomQuoteHandler(callback, this.sendMessage.bind(this));
           break;
         case "go_to_news":
-          try {
-            await sendNewsHandler(
-              callback,
-              this.sendMessage.bind(this),
-              this.sendPhoto.bind(this),
-              this.deleteMessage.bind(this)
-            );
-          } catch (err) {
-            console.error(err);
-            this.sendMessage(callback.from.id, "Error fetching news... 😢");
-          }
+          await sendNewsHandler(
+            callback,
+            this.sendMessage.bind(this),
+            this.sendPhoto.bind(this),
+            this.deleteMessage.bind(this)
+          );
           break;
         case "go_to_eq":
-          try {
-            await sendLatestEQHandler(
-              callback,
-              this.sendMessage.bind(this),
-              this.sendPhoto.bind(this),
-              this.deleteMessage.bind(this)
-            );
-          } catch (err) {
-            console.error(err);
-            this.sendMessage(
-              callback.from.id,
-              "Error fetching earthquake information... 😢"
-            );
-          }
+          await sendLatestEQHandler(
+            callback,
+            this.sendMessage.bind(this),
+            this.sendPhoto.bind(this),
+            this.deleteMessage.bind(this)
+          );
           break;
         case "go_to_activity":
-          try {
-            await sendActivityHandler(
-              callback,
-              this.sendMessage.bind(this),
-              this.deleteMessage.bind(this)
-            );
-          } catch (err) {
-            console.error(err);
-            this.sendMessage(callback.from.id, "Error fetching activity... 😢");
-          }
+          await sendActivityHandler(
+            callback,
+            this.sendMessage.bind(this),
+            this.deleteMessage.bind(this)
+          );
           break;
         case "go_to_joke":
-          try {
-            await sendJokeHandler(
-              callback,
-              this.sendMessage.bind(this),
-              this.deleteMessage.bind(this)
-            );
-          } catch (err) {
-            console.error(err);
-            this.sendMessage(callback.from.id, "Error fetching joke... 😢");
-          }
+          await sendJokeHandler(
+            callback,
+            this.sendMessage.bind(this),
+            this.deleteMessage.bind(this)
+          );
           break;
         default:
           break;

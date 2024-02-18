@@ -3,9 +3,9 @@
  ** Pisahkan function
  */
 
- const commands = require("../libs/commands");
+const commands = require("../libs/commands");
 
- async function handleMessage(data, sendMessage, invalidCommand) {
+async function handleMessage(data, sendMessage, invalidCommand) {
   const isCommands = Object.values(commands).some((keyword) =>
     keyword.test(data.text)
   );
@@ -20,7 +20,7 @@
         inline_keyboard: [
           [
             {
-              text: "Panduan Pengguna",
+              text: "User Guide",
               callback_data: "go_to_help",
             },
           ],
@@ -46,7 +46,7 @@ async function sendRandomQuoteHandler(data, sendMessage) {
     sendMessage(data.from.id, quote);
   } catch (err) {
     console.error(err);
-    sendMessage(data.from.id, "Ada kesalahan saat pengambilan data.. 😢");
+    sendMessage(data.from.id, "Error fetching quote.. 😢");
   }
 }
 
@@ -59,7 +59,7 @@ async function sendNewsHandler(
   const chatId = callback.from.id;
   console.log(`News executed by => ${callback.from.username}`);
   const news_endpoint = process.env.NEWS_ENDPOINT;
-  const waitMsg = await sendMessage(chatId, "Mohon tunggu sebentar.. 🙏");
+  const waitMsg = await sendMessage(chatId, "Please wait a second.. 🙏");
   try {
     const fetchNews = await fetch(news_endpoint);
     const res = await fetchNews.json();
@@ -72,7 +72,7 @@ async function sendNewsHandler(
     }
   } catch (err) {
     console.error(err);
-    sendMessage(chatId, "Error fetching news.");
+    sendMessage(chatId, "Error fetching news.. 😢");
   }
 }
 
@@ -88,7 +88,7 @@ async function sendLatestEQHandler(
   const eq_endpoint = process.env.EQ_ENDPOINT;
   const waitMsg = await sendMessage(
     callback.from.id,
-    "Mohon tunggu sebentar.. 🙏"
+    "Please wait a second.. 🙏"
   );
   try {
     const fetchEq = await fetch(eq_endpoint);
@@ -101,17 +101,18 @@ async function sendLatestEQHandler(
     const shakeMapUrl = `https://data.bmkg.go.id/DataMKG/TEWS/${Shakemap}`;
 
     sendPhoto(callback.from.id, shakeMapUrl, {
-      caption: `Info Gempa Terbaru:\n${Tanggal} - ${Jam}\n\nWilayah: ${Wilayah}\nMagnitudo: ${Magnitude} SR\nKedalaman: ${Kedalaman}\nPotensi: ${Potensi}`,
+      caption: `Latest Earthquake Information:\n${Tanggal} - ${Jam}\n\nArea: ${Wilayah}\nMagnitude: ${Magnitude} SR\nDepth: ${Kedalaman}\nPotention: ${Potensi}`,
     });
   } catch (err) {
     console.error(err);
+    sendMessage(chatId, "Error fetching latest earthquake information.. 😢");
   }
 }
 
 async function checkGenderHandler(data, after, sendMessage, deleteMessage) {
   console.log(`Check Gender executed by => ${data.from.username}`);
   const check_gender_endpoint = `${process.env.CHECK_GENDER_ENDPOINT}${after[1]}`;
-  const waitMsg = await sendMessage(data.from.id, "Mohon tunggu sebentar.. 🙏");
+  const waitMsg = await sendMessage(data.from.id, "Please wait a second.. 🙏");
 
   try {
     const fetchGender = await fetch(check_gender_endpoint);
@@ -130,10 +131,7 @@ async function checkGenderHandler(data, after, sendMessage, deleteMessage) {
     );
   } catch (err) {
     console.error(err);
-    sendMessage(
-      data.from.id,
-      "Ada kesalahan saat melakukan request ke server, silahkan coba lagi.."
-    );
+    sendMessage(data.from.id, "Error fetching gender information.. 😢");
   }
 }
 
@@ -142,7 +140,7 @@ async function sendActivityHandler(callback, sendMessage, deleteMessage) {
   const bored_endpoint = process.env.BORED_ENDPOINT;
   const waitMsg = await sendMessage(
     callback.from.id,
-    "Mohon tunggu sebentar.. 🙏"
+    "Please wait a second.. 🙏"
   );
 
   try {
@@ -153,10 +151,7 @@ async function sendActivityHandler(callback, sendMessage, deleteMessage) {
     sendMessage(callback.from.id, activity);
   } catch (err) {
     console.error(err);
-    sendMessage(
-      callback.from.id,
-      "Ada kesalahan saat melakukan request ke server, silahkan coba lagi.."
-    );
+    sendMessage(callback.from.id, "Error fetching activity.. 😢");
   }
 }
 
@@ -165,7 +160,7 @@ async function sendJokeHandler(callback, sendMessage, deleteMessage) {
   const joke_endpoint = process.env.JOKE_ENDPOINT;
   const waitMsg = await sendMessage(
     callback.from.id,
-    "Mohon tunggu sebentar.. 🙏"
+    "Please wait a second.. 🙏"
   );
 
   try {
@@ -175,10 +170,7 @@ async function sendJokeHandler(callback, sendMessage, deleteMessage) {
     sendMessage(callback.from.id, `${setup}\n${punchline}`);
   } catch (err) {
     console.error(err);
-    sendMessage(
-      callback.from.id,
-      "Ada kesalahan saat melakukan request ke server, silahkan coba lagi.."
-    );
+    sendMessage(callback.from.id, "Error fetching joke.. 😢");
   }
 }
 

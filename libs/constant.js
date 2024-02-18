@@ -1,17 +1,17 @@
 const helpMessage = `
-!commands = Menampilkan command button
+!commands = Bot will show commands button 🥳
 
-!bored = Bot akan menyarankan aktifitas jika kamu bosan
-!cg [name] = Bot akan memeriksa probabilitas jenis kelamin berdasarkan nama
-!eq = Bot akan mengirimkan data gempa bumi terbaru
-!follow [text] = Bot akan mengikuti chat kamu
-!greeting = Bot akan menyapa kamu
-!help = Bot akan memberi tahu commands yang tersedia
-!joke = Bot akan memberikan joke seputar dunia programming
-!news = Bot akan mengirimkan berita terbaru
-!quote = Bot akan mengirimkan quote dari Kanye West
+!bored = Bot will suggest you some activity to do when you feel bored 🤔
+!cg [name] = Bot will predict your gender by name 🧐
+!eq = Bot will send latest Indonesia earthquake information 😱
+!follow [text] = Bot will follow your chat 😄
+!greeting = Bot will greet you 😋
+!help = Bot will show available commands 😍
+!joke = Bot will give you jokes about programming 🤣
+!news = Bot will send latest Indonesian news 🗞️
+!quote = Bot will send quote from Kanye West 🤩
 `;
 
-const invalidCommand = "Mohon maaf, command tidak tersedia 😭";
+const invalidCommand = "Sorry, command not found.. 😭";
 
 module.exports = { helpMessage, invalidCommand };
