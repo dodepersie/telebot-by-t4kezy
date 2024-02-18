@@ -9,10 +9,17 @@ const main = () => {
     telebot.sendSticker();
     telebot.sendGreeting();
     telebot.followMe();
-    telebot.getRandQuote();
-    telebot.getNews();
-    telebot.getLatestEQ();
+    telebot.sendRandQuote();
+    telebot.sendNews();
+    telebot.sendLatestEQ();
     telebot.showHelp();
+
+    telebot.showCommands(); // #1
+    telebot.checkGender(); // #2
+    telebot.sendActivity(); // #2
+    telebot.sendJoke(); // #2
+    telebot.changePrefix(); // #3
+    telebot.masihGatau(); // #5
 }
 
 main();
