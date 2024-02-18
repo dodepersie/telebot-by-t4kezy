@@ -18,7 +18,7 @@ const main = () => {
     telebot.checkGender(); // #2
     telebot.sendActivity(); // #2
     telebot.sendJoke(); // #2
-    telebot.changePrefix(); // #3
+    // telebot.changePrefix(); // #3
     telebot.masihGatau(); // #5
 }
 

@@ -30,7 +30,7 @@ async function sendNewsHandler(
     const fetchNews = await fetch(news_endpoint);
     const res = await fetchNews.json();
     deleteMessage(chatId, waitMsg.message_id);
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 5; i++) {
       const { image, title, headline } = res.posts[i];
       sendPhoto(chatId, image, {
         caption: `===================\n${title}\n===================\n\n${headline}`,

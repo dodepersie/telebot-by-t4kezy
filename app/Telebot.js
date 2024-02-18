@@ -282,18 +282,23 @@ class Telebot extends TelegramBot {
    ** buat identifier / custom prefix commands
    */
   changePrefix() {
-    this.onText(commands.cp, (data, after) => {
-      const newPrefix = after[1];
+    this.onText(commands.cp, (msg, after) => {
+      if (after && after[1]) {
+        const newPrefix = after[1];
 
-      // Mengganti prefix untuk semua command
-      for (const key in commands) {
-        console.log(commands[key]);
+        for (const key in commands) {
+          if (key !== "cp") {
+            commands[key] = new RegExp(`^${newPrefix}${key}\\s+(.+)`);
+          }
+        }
+
+        this.sendMessage(
+          msg.from.id,
+          `Prefix berhasil diubah menjadi => ${newPrefix}`
+        );
+      } else {
+        this.sendMessage(msg.from.id, "Prefix tidak valid. Mohon coba lagi.");
       }
-
-      this.sendMessage(
-        data.from.id,
-        `Prefix berhasil diubah menjadi => ${newPrefix}`
-      );
     });
   }
 
@@ -302,7 +307,7 @@ class Telebot extends TelegramBot {
    ** Explore functions yang ada
    */
   masihGatau() {
-    console.log("Masih bingung!")
+    // console.log("Masih bingung!");
   }
 }
 
