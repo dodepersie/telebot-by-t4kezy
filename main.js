@@ -1,11 +1,16 @@
 require("dotenv").config();
 const Telebot = require("./app/Telebot");
 
+// Bot Configuration
 const token = process.env.TELEGRAM_TOKEN;
 const options = { polling: true };
+
+// Initializing Bot
+console.log("Starting TeleBot by t4kezy.. 🎉")
 const telebot = new Telebot(token, options);
 
 const main = () => {
+    console.log("Preparing feature... 🧐")
     telebot.sendSticker();
     telebot.sendGreeting();
     telebot.followMe();
@@ -19,6 +24,8 @@ const main = () => {
     telebot.sendJoke(); // #2
     telebot.changePrefix(); // #3
     // telebot.masihGatau(); // #5
+    console.log("Feature loaded successfully.. 🎉")
 }
 
 main();
+console.log("Bot is running.. 🥳🎉")

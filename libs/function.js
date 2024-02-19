@@ -46,7 +46,7 @@ async function sendRandomQuoteHandler(callback, sendMessage, deleteMessage) {
     const fetchQuote = await fetch(quote_endpoint);
     const { quote, anime, character } = await fetchQuote.json();
     deleteMessage(chatId, waitMsg.message_id);
-    sendMessage(callback.from.id, `${quote}\n\n—${character} from ${anime}`);
+    sendMessage(callback.from.id, `${quote}\n\n— ${character} from ${anime}`);
   } catch (err) {
     console.error(err);
     sendMessage(callback.from.id, "Error fetching quote.. 😢");

@@ -7,7 +7,7 @@ const helpMessage = `🍻 Help / Commands List 🍻
     !eq = Bot will send latest Indonesia earthquake information 😱
     !greeting = Bot will greet you 😋
     !help = Bot will show available commands 😍
-    !joke = Bot will give you jokes about programming 🤣
+    !joke = Bot will give you programming joke 🤣
     !news = Bot will send latest Indonesian news 🗞️
     !quote = Bot will send anime quote 🤩
 ---
