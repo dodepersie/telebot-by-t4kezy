@@ -11,6 +11,7 @@ const {
   sendActivityHandler,
   sendJokeHandler,
 } = require("../libs/function");
+const { changePrefix } = require("../libs/dynamic");
 
 class Telebot extends TelegramBot {
   constructor(token, options) {
@@ -51,7 +52,11 @@ class Telebot extends TelegramBot {
   // Bot will send random Kanye West's quote
   sendRandQuote() {
     this.onText(commands.quote, (data) => {
-      sendRandomQuoteHandler(data, this.sendMessage.bind(this));
+      sendRandomQuoteHandler(
+        data,
+        this.sendMessage.bind(this),
+        this.deleteMessage.bind(this)
+      );
     });
   }
 
@@ -95,7 +100,7 @@ class Telebot extends TelegramBot {
   showCommands() {
     this.onText(commands.commands, (data) => {
       console.log(`Command Menu executed by => ${data.from.username}`);
-      this.sendMessage(data.from.id, "Here is some available commands:", {
+      this.sendMessage(data.from.id, "There are some available commands:", {
         reply_markup: {
           inline_keyboard: [
             [
@@ -106,11 +111,9 @@ class Telebot extends TelegramBot {
             ],
             [
               {
-                text: "Kanye West's Quote 🤩",
+                text: "Quote 🤩",
                 callback_data: "go_to_quote",
               },
-            ],
-            [
               {
                 text: "Latest News 🗞️",
                 callback_data: "go_to_news",
@@ -127,8 +130,6 @@ class Telebot extends TelegramBot {
                 text: "I am bored 😢",
                 callback_data: "go_to_activity",
               },
-            ],
-            [
               {
                 text: "Make me laugh 😏",
                 callback_data: "go_to_joke",
@@ -150,7 +151,11 @@ class Telebot extends TelegramBot {
           );
           break;
         case "go_to_quote":
-          await sendRandomQuoteHandler(callback, this.sendMessage.bind(this));
+          await sendRandomQuoteHandler(
+            callback,
+            this.sendMessage.bind(this),
+            this.deleteMessage.bind(this)
+          );
           break;
         case "go_to_news":
           await sendNewsHandler(
@@ -224,27 +229,17 @@ class Telebot extends TelegramBot {
   }
 
   /*
-   ** TUGAS #3 - Not Done
+   ** TUGAS #3 - Almost Done
    ** buat identifier / custom prefix commands
    */
   changePrefix() {
-    this.onText(commands.cp, (msg, after) => {
-      if (after && after[1]) {
-        const newPrefix = after[1];
+    this.onText(commands.cp, (data, after) => {
+      changePrefix(after[1]);
 
-        for (const key in commands) {
-          if (key !== "cp") {
-            commands[key] = new RegExp(`^${newPrefix}${key}\\s+(.+)`);
-          }
-        }
-
-        this.sendMessage(
-          msg.from.id,
-          `Prefix berhasil diubah menjadi => ${newPrefix}`
-        );
-      } else {
-        this.sendMessage(msg.from.id, "Prefix tidak valid. Mohon coba lagi.");
-      }
+      this.sendMessage(
+        data.from.id,
+        `Successfully changed prefix to: "${after[1]}" 🔥`
+      );
     });
   }
 

@@ -37,16 +37,19 @@ async function handleCallbackQuery(callback, sendMessage, helpMessage) {
   }
 }
 
-async function sendRandomQuoteHandler(data, sendMessage) {
+async function sendRandomQuoteHandler(callback, sendMessage, deleteMessage) {
+  const chatId = callback.from.id
   const quote_endpoint = process.env.QUOTE_ENDPOINT;
+  console.log(`Random Quote executed by => ${callback.from.username}`);
+  const waitMsg = await sendMessage(chatId, "Please wait a second.. 🙏");
   try {
-    console.log(`Random Quote executed by => ${data.from.username}`);
     const fetchQuote = await fetch(quote_endpoint);
-    const { quote } = await fetchQuote.json();
-    sendMessage(data.from.id, quote);
+    const { quote, anime, character } = await fetchQuote.json();
+    deleteMessage(chatId, waitMsg.message_id);
+    sendMessage(callback.from.id, `${quote}\n\n—${character} from ${anime}`);
   } catch (err) {
     console.error(err);
-    sendMessage(data.from.id, "Error fetching quote.. 😢");
+    sendMessage(callback.from.id, "Error fetching quote.. 😢");
   }
 }
 
@@ -148,7 +151,7 @@ async function sendActivityHandler(callback, sendMessage, deleteMessage) {
     const { activity } = await fetchIp.json();
     deleteMessage(callback.from.id, waitMsg.message_id);
 
-    sendMessage(callback.from.id, activity);
+    sendMessage(callback.from.id, `Activity suggestion => ${activity}`);
   } catch (err) {
     console.error(err);
     sendMessage(callback.from.id, "Error fetching activity.. 😢");
