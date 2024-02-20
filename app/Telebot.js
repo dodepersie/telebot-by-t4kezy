@@ -11,7 +11,6 @@ const {
   sendActivityHandler,
   sendJokeHandler,
 } = require("../libs/function");
-const { changePrefix } = require("../libs/dynamic");
 
 class Telebot extends TelegramBot {
   constructor(token, options) {
