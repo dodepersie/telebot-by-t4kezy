@@ -229,21 +229,6 @@ class Telebot extends TelegramBot {
   }
 
   /*
-   ** TUGAS #3 - Almost Done
-   ** buat identifier / custom prefix commands
-   */
-  changePrefix() {
-    this.onText(commands.cp, (data, after) => {
-      changePrefix(after[1]);
-
-      this.sendMessage(
-        data.from.id,
-        `Successfully changed prefix to: "${after[1]}" 🔥`
-      );
-    });
-  }
-
-  /*
    ** TUGAS #5
    ** Explore functions yang ada
    */

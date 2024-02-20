@@ -1,4 +1,9 @@
-const { commandPrefix } = require("./dynamic");
+/*
+ ** TUGAS #3 - Almost Done
+ ** buat identifier / custom prefix commands
+ */
+
+let commandPrefix = "!"; // Default prefix set to "!"
 
 function filtered({ keyword, type }) {
   if (type === "only") return new RegExp(`^${commandPrefix}${keyword}$`, "i");
