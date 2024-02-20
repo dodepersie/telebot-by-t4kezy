@@ -23,7 +23,6 @@ const commands = {
   quote: filtered({ keyword: "quote", type: "only" }),
 
   cg: filtered({ keyword: "cg", type: "after" }),
-  cp: filtered({ keyword: "cp", type: "after" }),
   follow: filtered({ keyword: "follow", type: "after" }),
 };
 
