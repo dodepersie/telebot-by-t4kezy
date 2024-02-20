@@ -61,8 +61,7 @@ class Telebot extends TelegramBot {
 
   // Bot will send latest news from Jakpost API
   sendNews() {
-    this.onText(commands.news, async (data) => {
-      console.log(`News executed by => ${data.from.username}`);
+    this.onText(commands.news, (data) => {
       sendNewsHandler(
         data,
         this.sendMessage.bind(this),
@@ -74,7 +73,7 @@ class Telebot extends TelegramBot {
 
   // Get Latest Indonesia Earthquake from BMKG
   sendLatestEQ() {
-    this.onText(commands.eq, async (data) => {
+    this.onText(commands.eq, (data) => {
       sendLatestEQHandler(
         data,
         this.sendMessage.bind(this),
@@ -197,8 +196,8 @@ class Telebot extends TelegramBot {
    ** tambahkan fitur baru dari API public apapun
    */
   checkGender() {
-    this.onText(commands.cg, async (data, after) => {
-      await checkGenderHandler(
+    this.onText(commands.cg, (data, after) => {
+      checkGenderHandler(
         data,
         after,
         this.sendMessage.bind(this),
@@ -208,8 +207,8 @@ class Telebot extends TelegramBot {
   }
 
   sendActivity() {
-    this.onText(commands.bored, async (data) => {
-      await sendActivityHandler(
+    this.onText(commands.bored, (data) => {
+      sendActivityHandler(
         data,
         this.sendMessage.bind(this),
         this.deleteMessage.bind(this)
@@ -218,8 +217,8 @@ class Telebot extends TelegramBot {
   }
 
   sendJoke() {
-    this.onText(commands.joke, async (data) => {
-      await sendJokeHandler(
+    this.onText(commands.joke, (data) => {
+     sendJokeHandler(
         data,
         this.sendMessage.bind(this),
         this.deleteMessage.bind(this)
